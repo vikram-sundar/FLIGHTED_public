@@ -1,6 +1,6 @@
 # FLIGHTED
 
-FLIGHTED, a machine learnign method for inference of fitness landscapes from high-throughput experimental data.
+FLIGHTED, a machine learning method for inference of fitness landscapes from high-throughput experimental data.
 
 Author: Vikram Sundar.
 
