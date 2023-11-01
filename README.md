@@ -36,4 +36,3 @@ TODO: add some sort of requirements file.
 Before using the package, you should test the code after installation to ensure that all the requirements are installed correctly and the package is working. To test the code, run `make test-all` in the main directory. This will automatically run a linter and all relevant tests.
 
 While developing code, you can skip slow tests by running `make test` instead.
-
