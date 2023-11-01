@@ -15,7 +15,6 @@ Author: Vikram Sundar.
     - biopython
     - pytest
     - pytest-pylint
-    - python-levenshtein
     - pytorch
     - black
     - isort
