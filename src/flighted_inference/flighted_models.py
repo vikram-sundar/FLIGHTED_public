@@ -453,7 +453,7 @@ class SelectionToFitnessFNN(nn.Module):
 
     def forward(self, selection_output):
         """Computes fitness mean and variance given the selection readout.
-        ll
+
         Args:
             selection_output: torch.Tensor with observed selection output with shape batch_size x
                 num_variants x 5.
