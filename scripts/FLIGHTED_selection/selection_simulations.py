@@ -60,3 +60,4 @@ selection_data = selection_data.permute(1, 2, 0)
 
 data_dir = "Data/Selection_Simulations/"
 torch.save(selection_data, os.path.join(data_dir, "selection_data.pt"))
+np.save(os.path.join(data_dir, "p_sel.npy"), p_sel)
