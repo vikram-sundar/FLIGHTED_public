@@ -17,7 +17,7 @@ logging.basicConfig(format="%(message)s", level=logging.INFO)
 output_path = "Data/Selection_Models/test_model"
 data_path = "Data/Selection_Simulations/"
 selection_data = torch.load(os.path.join(data_path, "selection_data.pt"))
-p_sel = np.load(os.path.join(data_dir, "p_sel.npy"))
+p_sel = np.load(os.path.join(data_path, "p_sel.npy"))
 sequences = ["".join(val) for val in itertools.product(PROTEIN_ALPHABET, repeat=4)]
 
 
