@@ -14,7 +14,7 @@ pyro.enable_validation(True)
 pyro.set_rng_seed(1)
 logging.basicConfig(format="%(message)s", level=logging.INFO)
 
-output_path = "Data/Selection_Models/test_model"
+output_path = "Data/FLIGHTED_Selection/"
 data_path = "Data/Selection_Simulations/"
 selection_data = torch.load(os.path.join(data_path, "selection_data.pt"))
 p_sel = np.load(os.path.join(data_path, "p_sel.npy"))
