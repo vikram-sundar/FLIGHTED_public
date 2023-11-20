@@ -10,6 +10,8 @@ import torch
 from src.common_utils import PROTEIN_ALPHABET, to_one_hot
 from src.flighted_inference import flighted_models, flighted_trainers
 
+# pylint: disable=invalid-name
+
 pyro.enable_validation(True)
 pyro.set_rng_seed(1)
 logging.basicConfig(format="%(message)s", level=logging.INFO)
@@ -22,6 +24,7 @@ sequences = ["".join(val) for val in itertools.product(PROTEIN_ALPHABET, repeat=
 
 
 def to_one_hot_sequence(sequence):
+    """Return one-hot sequence for protein alphabet."""
     return to_one_hot(sequence, alphabet=PROTEIN_ALPHABET).transpose(0, 1)
 
 
