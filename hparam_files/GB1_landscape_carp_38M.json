@@ -1,0 +1,1 @@
+{"learning_rate": 1e-3, "lr_scheduler": false, "batch_size": 256, "num_features": 1024, "hidden_dim": [1024], "activation": "relu"}

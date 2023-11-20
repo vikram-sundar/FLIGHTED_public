@@ -1,0 +1,1 @@
+{"lr_scheduler": false, "batch_size": 256, "num_features": 480, "num_channels": [480], "filter_size": [5], "intermediate_dim": 960, "activation": "relu"}

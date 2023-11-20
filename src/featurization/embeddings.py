@@ -26,6 +26,10 @@ TAPE_TOKENIZER = {"transformer": "iupac", "unirep": "unirep"}
 ESM_MODEL = {
     "esm-2-15b": "esm2_t48_15B_UR50D",
     "esm-2-3b": "esm2_t36_3B_UR50D",
+    "esm-2-650m": "esm2_t33_650M_UR50D",
+    "esm-2-150m": "esm2_t30_150M_UR50D",
+    "esm-2-35m": "esm2_t12_35M_UR50D",
+    "esm-2-8m": "esm2_t6_8M_UR50D",
     "esm-1b": "esm1b_t33_650M_UR50S",
     "esm-small": "esm1_t6_43M_UR50S",
     "esm-1v-1": "esm1v_t33_650M_UR90S_1",
