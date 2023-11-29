@@ -31,9 +31,7 @@ def to_one_hot_sequence(sequence):
     return to_one_hot(sequence, alphabet=PROTEIN_ALPHABET_EXTENDED).transpose(0, 1)
 
 
-fluorescence_df = pd.read_csv(os.path.join(data_folder, "220124gfpl-aa-rfu.csv"), sep=",")
-fluorescence_df = fluorescence_df.rename({"AA_gfp": "variant_seq", "rfu": "fluorescence"}, axis=1)
-
+fluorescence_df = pd.read_csv(os.path.join(data_folder, "facs_clean.csv"), sep="\t")
 dharma_df = pd.read_csv(os.path.join(data_folder, "822988_clean.csv"), sep="\t")
 
 # Filter out sequences for which we have fluorescence data (to use for testing)

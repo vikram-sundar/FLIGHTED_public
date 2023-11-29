@@ -57,12 +57,11 @@ def make_predictions(model, dharma_ds):
     seqs = []
 
     for seq, data in tqdm(zip(dharma_ds.sequences, dharma_ds)):
-        if len(seq) == 4:
-            mean, variance = model.infer_fitness_from_dharma(data[1])
-            pred_means += [mean.detach().numpy()[()]]
-            pred_variances += [variance.detach().numpy()[()]]
-            num_reads += [data[1].shape[0]]
-            seqs += [seq]
+        mean, variance = model.infer_fitness_from_dharma(data[1])
+        pred_means += [mean.detach().numpy()[()]]
+        pred_variances += [variance.detach().numpy()[()]]
+        num_reads += [data[1].shape[0]]
+        seqs += [seq]
 
     return pred_means, pred_variances, seqs, num_reads
 
