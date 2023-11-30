@@ -6,7 +6,7 @@ from torch import nn
 
 from src.common_utils import overwrite_hparams
 
-# pylint: disable=no-member, too-many-ancestors, arguments-differ, no-self-use
+# pylint: disable=no-member, too-many-ancestors, arguments-differ
 
 ACTIVATION_DICT = {"elu": nn.ELU(), "relu": nn.ReLU(), "tanh": nn.Tanh()}
 

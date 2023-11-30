@@ -10,7 +10,7 @@ import torch.nn.functional as F
 
 from src.flighted_inference import flighted_models
 
-# pylint: disable=no-member, invalid-name
+# pylint: disable=no-member, invalid-name, not-callable
 
 # read in sequence and remove nans
 GB1_landscape = pd.read_csv("Data/Fitness_Landscapes/GB1_landscape.csv")
