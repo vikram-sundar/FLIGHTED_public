@@ -65,4 +65,4 @@ The provided notebooks reproduce all figures used in the main text and supplemen
 
 ## Citing FLIGHTED
 
-For now, please cite the MLSB paper, available here.
+For now, please cite the MLSB paper.
