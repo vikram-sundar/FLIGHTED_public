@@ -11,18 +11,13 @@ from src.common_utils import overwrite_hparams
 ACTIVATION_DICT = {"elu": nn.ELU(), "relu": nn.ReLU(), "tanh": nn.Tanh()}
 
 
-class NegativeDataLoss(nn.Module):
-    """A class to compute loss, incorpoating negative data information.
-
-    Predictions incorporated as MSE loss. Negative data incorporated as a loss of 0
-    if the upper bound is satisfied and sigmoid(x) - 0.5, with appropriate scaling,
-    if the upper bound is not satisfied.
+class MSELoss(nn.Module):
+    """A class to compute MSE loss.
 
     Args:
         y: torch.Tensor, true y values, or upper bounds.
         y_hat: torch.Tensor, predicted y values
         var: torch.Tensor, variance on true y values (or 1 as a dummy)
-        types: torch.Tensor, type of data (0 for fitness prediction and 1 for upper bound).
     """
 
     def forward(self, y, y_hat, var):
@@ -34,10 +29,6 @@ class NegativeDataLoss(nn.Module):
 
 class LinearRegressionLandscapeModel(nn.Module):
     """A simple linear regression model.
-
-    This model uses the negative data loss function defined above to incorporate
-    both positive and negative data into training a linear regression on
-    the provided features.
 
     Attributes:
         linear: nn.Linear containing the linear layer.
@@ -76,9 +67,6 @@ class LinearRegressionLandscapeModel(nn.Module):
 
 class CNNLandscapeModel(nn.Module):
     """A CNN model.
-
-    This model uses the negative data loss function defined above to incorporate
-    both positive and negative data into training a CNN on the provided features.
 
     Attributes:
         cnn: nn.Sequential module containing the CNN.
@@ -159,9 +147,6 @@ class CNNLandscapeModel(nn.Module):
 
 class FNNLandscapeModel(nn.Module):
     """A feedforward network model.
-
-    This model uses the negative data loss function defined above to incorporate
-    both positive and negative data into training a FNN on the provided features.
 
     Attributes:
         model: nn.Sequential module containing the FNN.

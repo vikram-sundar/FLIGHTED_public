@@ -6,12 +6,12 @@ from src.landscape_inference import landscape_models
 # pylint: disable=no-member, missing-function-docstring
 
 
-def test_negative_data_loss():
-    neg_data_loss = landscape_models.NegativeDataLoss()
+def test_mse_loss():
+    mse_loss = landscape_models.MSELoss()
     y = torch.Tensor([1, 2, 3, 4])
     y_hat = torch.Tensor([0, 5, 5, 6])
     variances = torch.Tensor([1, 2, 1, 1])
-    loss = neg_data_loss(y, y_hat, variances)
+    loss = mse_loss(y, y_hat, variances)
     assert loss.numpy()[()] > 3.374 and loss.numpy()[()] < 3.376
 
 

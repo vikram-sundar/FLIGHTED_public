@@ -82,7 +82,7 @@ def train_landscape_model(
     )
     model.to(device)
 
-    loss_fn = landscape_models.NegativeDataLoss()
+    loss_fn = landscape_models.MSELoss()
     loss_fn.to(device)
 
     # dummy variance
