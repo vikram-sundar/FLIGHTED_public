@@ -1,4 +1,4 @@
-"""Tests for featurization/test_embeddings.py."""
+"""Tests for featurization/embeddings.py."""
 import functools
 from pathlib import Path
 
@@ -124,3 +124,9 @@ def test_concat_embedding():
     ]
     embedding = embeddings.concat_embeddings(sequences, embedding_funcs)
     assert list(embedding.shape) == [3, 808]
+
+
+def test_esm_fineutne_embedding():
+    sequences = ["AA", "AC", "AD"]
+    embedding = embeddings.esm_finetune_embedding(sequences, "esm-small")
+    assert list(embedding.shape) == [3, 3]

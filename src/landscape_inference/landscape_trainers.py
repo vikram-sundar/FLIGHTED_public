@@ -93,15 +93,11 @@ def train_landscape_model(
     if test_variances is None:
         test_variances = torch.Tensor([1 for _ in test_fitnesses])
 
-    train_dataset = landscape_datasets.PRANCEFitnessDataset(
+    train_dataset = landscape_datasets.FitnessDataset(
         train_sequences, train_fitnesses, train_variances
     )
-    val_dataset = landscape_datasets.PRANCEFitnessDataset(
-        val_sequences, val_fitnesses, val_variances
-    )
-    test_dataset = landscape_datasets.PRANCEFitnessDataset(
-        test_sequences, test_fitnesses, test_variances
-    )
+    val_dataset = landscape_datasets.FitnessDataset(val_sequences, val_fitnesses, val_variances)
+    test_dataset = landscape_datasets.FitnessDataset(test_sequences, test_fitnesses, test_variances)
 
     train_dataloader = DataLoader(train_dataset, batch_size=hparams["batch_size"], shuffle=True)
     val_dataloader = DataLoader(val_dataset, batch_size=hparams["test_batch_size"], shuffle=False)
@@ -182,6 +178,7 @@ def train_landscape_model(
         model, optimizer, _ = common_utils.load_model_from_epoch(
             output_dir, best_epoch, model, optimizer
         )
+    model.eval()
 
     test_preds = []
     test_trues = []

@@ -6,8 +6,8 @@ from torch.utils.data import Dataset
 # pylint: disable=no-member
 
 
-class PRANCEFitnessDataset(Dataset):
-    """A dataset class to summarize all fitness data from PRANCE fitness models.
+class FitnessDataset(Dataset):
+    """A dataset class to summarize all fitness data from fitness models.
 
     This dataset has x-coordinates corresponding to sequences and y-coordinates
     corresponding to fitnesses. It also has a type attribute telling what type

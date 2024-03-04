@@ -41,7 +41,7 @@ While developing code, you can skip slow tests by running `make test` instead.
 
 ## Data
 
-Data, including the trained model weights for FLIGHTED-Selection and FLIGHTED-DHARMA, has been deposited at Zenodo [here](https://zenodo.org/records/10229506). Data should be downloaded and installed in a `Data/` folder within this directory so the filepaths match in scripts and notebooks.
+Data, including the trained model weights for FLIGHTED-Selection and FLIGHTED-DHARMA, has been deposited at Zenodo [here](https://zenodo.org/records/10777739) and [here](tmp). Data should be downloaded and installed in a `Data/` folder within this directory so the filepaths match in scripts and notebooks.
 
 ## Scripts
 
@@ -56,6 +56,7 @@ Within `scripts/FLIGHTED_DHARMA`, we have:
 
 1. `train_dharma_model.py`: trains FLIGHTED-DHARMA on the provided data (should be run on a GPU).
 2. `infer_fitness_from_dharma.py`: infers fitnesses from DHARMA data.
+3. `train_landscape_model.py`: trains a landscape model (with the given options) on the TEV landscape. Can be extended to train models on other landscapes.
 
 These scripts should allow you to regenerate all data provided in Zenodo, aside from the DHARMA input data that was obtained experimentally.
 

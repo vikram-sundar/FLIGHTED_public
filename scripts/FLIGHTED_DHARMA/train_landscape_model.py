@@ -1,4 +1,4 @@
-"""Script to model the GB1 landscape with FLIGHTED."""
+"""Script to model the TEV landscape with FLIGHTED."""
 import argparse
 import functools
 import json
@@ -16,7 +16,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument(
     "--split",
     type=str,
-    choices=["one_vs_rest", "two_vs_rest", "three_vs_rest", "low_vs_high"],
+    choices=["one_vs_rest", "two_vs_rest", "three_vs_rest"],
     help="Split to use",
     required=True,
 )
@@ -34,6 +34,7 @@ parser.add_argument(
     type=str,
     choices=[
         "one_hot",
+        "georgiev",
         "tape",
         "esm1b",
         "esm1v",
@@ -80,9 +81,6 @@ parser.add_argument(
     help="Type of embedding to use",
     required=True,
 )
-parser.add_argument("--noise", dest="noise", action="store_true", help="Whether to use FLIGHTED")
-parser.add_argument("--no-noise", dest="noise", action="store_false")
-parser.set_defaults(noise=True)
 args = parser.parse_args()
 
 MODEL_CLASSES = {
@@ -92,9 +90,10 @@ MODEL_CLASSES = {
     "esmfnn": landscape_models.ESMFinetuneLandscapeModel,
     "esmcnn": landscape_models.ESMCNNLandscapeModel,
 }
-WT_SEQUENCE = "MQYKLILNGKTLKGETTTEAVDAATAEKVFKQYANDNGVDGEWTYDDATKTFTVTELEVLFQGPLDPNSMATYEVLCEVARKLGTDDREVVLFLLNVFIPQPTLAQLIGALRALKEEGRLTFPLLAECLFRAGRRDLLRDLLHLDPRFLERHLAGTMSYFSPYQLTVLHVDGELCARDIRSLIFLSKDTIGSRSTPQTFLHWVYCMENLDLLGPTDVDALMSMLRSLSRVDLQRQVQTLMGLHLSGPSHSQHYRHTPLEHHHHHH"
+WT_SEQUENCE = "MFKGPRDYNPISSTICHLTNESDGHTTSLYGIGFGPFIITNKHLFRRNNGTLLVQSLHGVFKVKNTTTLQQHLIDGRDMIIIRMPKDFPPFPQKLKFREPQREERICLVTTNFQTKSMSSMVSDTSCTFPSSDGIFWKHWIQTKDGQCGSPLVSTRDGFIVGIHSASNFTNTNNYFTSVPKNFMELLTNQEAQQWVSGWRLNADSVLWGGHKVFMVKPEEPFQPVKEATQLMN"
 EMBEDDINGS = {
     "one_hot": embeddings.one_hot_embedding,
+    "georgiev": embeddings.georgiev_embedding,
     "tape": functools.partial(
         embeddings.tape_embedding, model="transformer", work_dir=args.output, aggregation="mean"
     ),
@@ -137,38 +136,38 @@ EMBEDDINGS = {
         model="esm-2-3b",
         work_dir=args.output,
         aggregation="mean",
-        batch_size=512,
+        batch_size=16,
     ),
     "prottrans": functools.partial(
-        embeddings.prottrans_embedding, model="prott5-xl-u50", aggregation="mean", batch_size=256
+        embeddings.prottrans_embedding, model="prott5-xl-u50", aggregation="mean", batch_size=16
     ),
     "carp_600k": functools.partial(
         embeddings.carp_embedding,
         model="600k",
         aggregation="mean",
         work_dir=args.output,
-        batch_size=8,
+        batch_size=2,
     ),
     "carp_38M": functools.partial(
         embeddings.carp_embedding,
         model="38M",
         aggregation="mean",
         work_dir=args.output,
-        batch_size=8,
+        batch_size=2,
     ),
     "carp_76M": functools.partial(
         embeddings.carp_embedding,
         model="76M",
         aggregation="mean",
         work_dir=args.output,
-        batch_size=8,
+        batch_size=2,
     ),
     "carp": functools.partial(
         embeddings.carp_embedding,
         model="640M",
         aggregation="mean",
         work_dir=args.output,
-        batch_size=8,
+        batch_size=2,
     ),
     "tape_all": functools.partial(
         embeddings.tape_embedding, model="transformer", work_dir=args.output
@@ -199,28 +198,28 @@ EMBEDDINGS = {
         embeddings.esm_embedding,
         model="esm-2-650m",
         work_dir=args.output,
-        batch_size=512,
+        batch_size=16,
     ),
     "esm2_all": functools.partial(
         embeddings.esm_embedding,
         model="esm-2-3b",
         work_dir=args.output,
-        batch_size=512,
+        batch_size=16,
     ),
     "prottrans_all": functools.partial(
-        embeddings.prottrans_embedding, model="prott5-xl-u50", batch_size=256
+        embeddings.prottrans_embedding, model="prott5-xl-u50", batch_size=16
     ),
     "carp_600k_all": functools.partial(
-        embeddings.carp_embedding, model="600k", work_dir=args.output, batch_size=8
+        embeddings.carp_embedding, model="600k", work_dir=args.output, batch_size=2
     ),
     "carp_38M_all": functools.partial(
-        embeddings.carp_embedding, model="38M", work_dir=args.output, batch_size=8
+        embeddings.carp_embedding, model="38M", work_dir=args.output, batch_size=2
     ),
     "carp_76M_all": functools.partial(
-        embeddings.carp_embedding, model="76M", work_dir=args.output, batch_size=8
+        embeddings.carp_embedding, model="76M", work_dir=args.output, batch_size=2
     ),
     "carp_all": functools.partial(
-        embeddings.carp_embedding, model="640M", work_dir=args.output, batch_size=8
+        embeddings.carp_embedding, model="640M", work_dir=args.output, batch_size=2
     ),
     "augmented_esm1v": functools.partial(
         embeddings.concat_embeddings,
@@ -324,20 +323,6 @@ EMBEDDINGS = {
             functools.partial(embeddings.one_hot_embedding, alphabet="protein", flatten=True),
         ],
     ),
-    "augmented_evcoupling": functools.partial(
-        embeddings.concat_embeddings,
-        embedding_funcs=[
-            functools.partial(
-                embeddings.evcoupling_variant_embedding,
-                wt_sequence=WT_SEQUENCE,
-                work_dir=args.output,
-                uniprot_location="Uniprot",
-                plmc_location="plmc-master/bin",
-                hmmer_location="bin/",
-            ),
-            functools.partial(embeddings.one_hot_embedding, alphabet="protein", flatten=True),
-        ],
-    ),
     "esm2_8m_finetune": functools.partial(embeddings.esm_finetune_embedding, model="esm-2-8m"),
     "esm2_35m_finetune": functools.partial(embeddings.esm_finetune_embedding, model="esm-2-35m"),
     "esm2_150m_finetune": functools.partial(embeddings.esm_finetune_embedding, model="esm-2-150m"),
@@ -348,61 +333,48 @@ EMBEDDINGS = {
 model_class = MODEL_CLASSES[args.model_type]
 embedding_func = EMBEDDINGS[args.embedding]
 
+
 with open(os.path.join("hparam_files", args.hparams), "r") as f:
     hparams = json.load(f)
 
-input_dir = "Data/Fitness_Landscapes/GB1_splits/"
-output_dir = "Data/Landscape_Models/GB1/"
+input_dir = "Data/TEV_Landscape/Splits/"
+output_dir = "/Data/TEV_Models/"
 train_data = pd.read_csv(os.path.join(input_dir, args.split + "_train.csv"))
 val_data = pd.read_csv(os.path.join(input_dir, args.split + "_val.csv"))
 test_data = pd.read_csv(os.path.join(input_dir, args.split + "_test.csv"))
 train_sequences = embedding_func(list(train_data["Complete Sequence"].values))
 val_sequences = embedding_func(list(val_data["Complete Sequence"].values))
-test_sequences = embedding_func(list(test_data["Complete Sequence"].values))
+test_sequences = list(test_data["Complete Sequence"].values)
 
 if args.model_type == "linear" and args.embedding == "one_hot":
     hparams["num_features"] = train_sequences.shape[1] * train_sequences.shape[2]
 if args.model_type == "linear" and args.embedding.startswith("augmented"):
     hparams["num_features"] = train_sequences.shape[1]
 
-if args.noise:
-    train_fitnesses = train_data["Updated Fitness"].values
-    val_fitnesses = val_data["Updated Fitness"].values
-    test_fitnesses = test_data["Updated Fitness"].values
-    train_variances = train_data["Fitness Variance"].values
-    val_variances = val_data["Fitness Variance"].values
-    test_variances = test_data["Fitness Variance"].values
+hparams["test_batch_size"] = 1000
 
-    landscape_trainers.train_landscape_model(
-        model_class,
-        train_sequences,
-        train_fitnesses,
-        val_sequences,
-        val_fitnesses,
-        test_sequences,
-        test_fitnesses,
-        os.path.join(output_dir, args.output),
-        train_variances=train_variances,
-        val_variances=val_variances,
-        test_variances=test_variances,
-        input_hparams=hparams,
-    )
-else:
-    train_fitnesses = train_data["Fitness"].values
-    val_fitnesses = val_data["Fitness"].values
-    test_fitnesses = test_data["Fitness"].values
+train_fitnesses = train_data["Fitness Mean"].values
+val_fitnesses = val_data["Fitness Mean"].values
+test_fitnesses = test_data["Fitness Mean"].values
+train_variances = train_data["Fitness Variance"].values
+val_variances = val_data["Fitness Variance"].values
+test_variances = test_data["Fitness Variance"].values
 
-    landscape_trainers.train_landscape_model(
-        model_class,
-        train_sequences,
-        train_fitnesses,
-        val_sequences,
-        val_fitnesses,
-        test_sequences,
-        test_fitnesses,
-        os.path.join(output_dir, args.output),
-        input_hparams=hparams,
-    )
+landscape_trainers.train_landscape_model(
+    model_class,
+    train_sequences,
+    train_fitnesses,
+    val_sequences,
+    val_fitnesses,
+    test_sequences,
+    test_fitnesses,
+    embedding_func,
+    os.path.join(output_dir, args.output),
+    train_variances=train_variances,
+    val_variances=val_variances,
+    test_variances=test_variances,
+    input_hparams=hparams,
+)
 
 np.save(
     os.path.join(output_dir, args.output, "test_sequences.npy"),

@@ -478,3 +478,21 @@ def concat_embeddings(sequences, embedding_funcs):
     """
     embeddings = [embedding_func(sequences) for embedding_func in embedding_funcs]
     return torch.cat(embeddings, axis=1).to(torch.float32)
+
+
+def esm_finetune_embedding(sequences, model):
+    """Converts a list of protein sequences to an ESM tokenized version.
+
+    Only for training a fine-tuned ESM model (not a normal ESM model). Only supports
+    models that take sequences (not MSA transformer, not ESM-1F).
+
+    Args:
+        sequences: list of strings representing the given sequences.
+        model: string, which model to use (see ESM_MODEL)
+
+    Returns:
+        torch.tensor with the given representation (number of sequences x sequence length + 1).
+    """
+    _, alphabet = pretrained.load_model_and_alphabet(ESM_MODEL[model])
+    _, _, toks = alphabet.get_batch_converter()([(str(i), seq) for i, seq in enumerate(sequences)])
+    return toks
