@@ -41,7 +41,7 @@ While developing code, you can skip slow tests by running `make test` instead.
 
 ## Data
 
-Data, including the trained model weights for FLIGHTED-Selection and FLIGHTED-DHARMA, has been deposited at Zenodo [here](https://zenodo.org/records/10777739) and [here](tmp). Data should be downloaded and installed in a `Data/` folder within this directory so the filepaths match in scripts and notebooks.
+Data, including the trained model weights for FLIGHTED-Selection and FLIGHTED-DHARMA, has been deposited at Zenodo [here](https://zenodo.org/records/10777739) and [here](https://zenodo.org/records/10779337). Data should be downloaded and installed in a `Data/` folder within this directory so the filepaths match in scripts and notebooks.
 
 ## Scripts
 
