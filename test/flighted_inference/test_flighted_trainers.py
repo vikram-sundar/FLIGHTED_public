@@ -4,8 +4,8 @@ from pathlib import Path
 import pandas as pd
 import torch
 
-from src.common_utils import RNA_ALPHABET, to_one_hot
-from src.flighted_inference import flighted_models, flighted_trainers
+from flighted.common_utils import RNA_ALPHABET, to_one_hot
+from flighted.flighted_inference import flighted_models, flighted_trainers
 
 PATH = Path(__file__).parent
 

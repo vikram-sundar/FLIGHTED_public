@@ -11,8 +11,8 @@ from sklearn.model_selection import train_test_split
 from torch.utils.data import DataLoader
 from tqdm import trange
 
-from src import common_utils
-from src.flighted_inference import flighted_datasets
+from flighted import common_utils
+from flighted.flighted_inference import flighted_datasets
 
 DEFAULT_DHARMA_HPARAMS = {
     "variant_column": "variant_seq",  # variant sequence column name

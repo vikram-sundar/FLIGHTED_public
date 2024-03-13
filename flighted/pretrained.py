@@ -5,7 +5,7 @@ from urllib.request import urlopen, urlretrieve
 
 import torch
 
-from src.flighted_inference import flighted_models
+from flighted.flighted_inference import flighted_models
 
 DHARMA_HPARAMS_URL = "https://raw.githubusercontent.com/vikram-sundar/FLIGHTED_public/main/Data/DHARMA_Models/hparams.json"
 DHARMA_WEIGHTS_URL = "https://raw.githubusercontent.com/vikram-sundar/FLIGHTED_public/main/Data/DHARMA_Models/best_model.ckpt"

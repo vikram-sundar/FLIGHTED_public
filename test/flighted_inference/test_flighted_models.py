@@ -2,7 +2,7 @@
 import pyro
 import torch
 
-from src.flighted_inference import flighted_models
+from flighted.flighted_inference import flighted_models
 
 # pylint: disable=missing-function-docstring, no-member
 

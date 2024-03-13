@@ -35,7 +35,7 @@ try:
 except ModuleNotFoundError:
     pass
 
-from src.common_utils import PROTEIN_ALPHABET, RNA_ALPHABET, to_one_hot
+from flighted.common_utils import PROTEIN_ALPHABET, RNA_ALPHABET, to_one_hot
 
 TAPE_PRETRAINED_DICT = {"transformer": "bert-base", "unirep": "babbler-1900"}
 TAPE_TOKENIZER = {"transformer": "iupac", "unirep": "unirep"}

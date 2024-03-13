@@ -11,8 +11,8 @@ except ModuleNotFoundError:
     pass
 from torch import nn
 
-from src.common_utils import overwrite_hparams
-from src.featurization import embeddings
+from flighted.common_utils import overwrite_hparams
+from flighted.featurization import embeddings
 
 # pylint: disable=no-member, too-many-ancestors, arguments-differ
 

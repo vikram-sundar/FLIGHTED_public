@@ -6,9 +6,9 @@ import numpy as np
 import pandas as pd
 from tqdm import tqdm
 
-from src import common_utils, pretrained
-from src.common_utils import PROTEIN_ALPHABET_EXTENDED
-from src.flighted_inference import flighted_datasets, flighted_trainers
+from flighted import common_utils, pretrained
+from flighted.common_utils import PROTEIN_ALPHABET_EXTENDED
+from flighted.flighted_inference import flighted_datasets, flighted_trainers
 
 # pylint: disable=invalid-name, redefined-outer-name, no-member
 

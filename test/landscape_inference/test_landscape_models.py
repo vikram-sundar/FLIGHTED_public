@@ -1,7 +1,7 @@
 """Tests for landscape_inference/landscape_models.py."""
 import torch
 
-from src.landscape_inference import landscape_models
+from flighted.landscape_inference import landscape_models
 
 # pylint: disable=no-member, missing-function-docstring, import-outside-toplevel, unused-import
 

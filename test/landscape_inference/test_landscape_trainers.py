@@ -6,8 +6,8 @@ from pathlib import Path
 
 import torch
 
-from src.common_utils import RNA_ALPHABET, to_one_hot
-from src.landscape_inference import landscape_models, landscape_trainers
+from flighted.common_utils import RNA_ALPHABET, to_one_hot
+from flighted.landscape_inference import landscape_models, landscape_trainers
 
 PATH = Path(__file__).parent
 

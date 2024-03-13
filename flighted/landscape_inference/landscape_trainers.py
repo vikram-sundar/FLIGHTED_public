@@ -10,8 +10,8 @@ from torch import optim
 from torch.utils.data import DataLoader
 from tqdm import trange
 
-from src import common_utils
-from src.landscape_inference import landscape_datasets, landscape_models
+from flighted import common_utils
+from flighted.landscape_inference import landscape_datasets, landscape_models
 
 DEFAULT_LANDSCAPE_HPARAMS = {
     "batch_size": 100,  # batch size for training

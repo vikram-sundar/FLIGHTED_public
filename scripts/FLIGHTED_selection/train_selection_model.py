@@ -7,8 +7,8 @@ import numpy as np
 import pyro
 import torch
 
-from src.common_utils import PROTEIN_ALPHABET, to_one_hot
-from src.flighted_inference import flighted_models, flighted_trainers
+from flighted.common_utils import PROTEIN_ALPHABET, to_one_hot
+from flighted.flighted_inference import flighted_models, flighted_trainers
 
 # pylint: disable=invalid-name
 

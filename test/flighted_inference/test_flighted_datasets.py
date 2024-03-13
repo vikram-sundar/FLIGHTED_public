@@ -4,7 +4,7 @@ from pathlib import Path
 import pandas as pd
 import torch
 
-from src.flighted_inference import flighted_datasets
+from flighted.flighted_inference import flighted_datasets
 
 PATH = Path(__file__).parent
 

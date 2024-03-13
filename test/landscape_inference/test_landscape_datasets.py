@@ -3,7 +3,7 @@ from pathlib import Path
 
 import torch
 
-from src.landscape_inference import landscape_datasets
+from flighted.landscape_inference import landscape_datasets
 
 PATH = Path(__file__).parent
 

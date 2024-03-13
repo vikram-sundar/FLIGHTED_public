@@ -9,8 +9,8 @@ from torch import nn
 from torch.distributions import transforms
 from torch.nn import functional as F
 
-from src.common_utils import overwrite_hparams
-from src.landscape_inference import landscape_models
+from flighted.common_utils import overwrite_hparams
+from flighted.landscape_inference import landscape_models
 
 # pylint: disable=no-member, too-many-lines, invalid-name, not-callable
 

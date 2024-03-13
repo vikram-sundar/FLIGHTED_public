@@ -1,6 +1,6 @@
 """Tests for pretrained.py."""
 
-from src import pretrained
+from flighted import pretrained
 
 # pylint: disable=missing-function-docstring
 

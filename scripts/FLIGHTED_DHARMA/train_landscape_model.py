@@ -7,8 +7,8 @@ import os
 import numpy as np
 import pandas as pd
 
-from src.featurization import embeddings
-from src.landscape_inference import landscape_models, landscape_trainers
+from flighted.featurization import embeddings
+from flighted.landscape_inference import landscape_models, landscape_trainers
 
 # pylint: disable=invalid-name
 

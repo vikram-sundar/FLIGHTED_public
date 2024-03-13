@@ -4,8 +4,8 @@ from pathlib import Path
 
 import pytest
 
-from src.common_utils import PROTEIN_ALPHABET
-from src.featurization import embeddings
+from flighted.common_utils import PROTEIN_ALPHABET
+from flighted.featurization import embeddings
 
 PATH = Path(__file__).parent
 

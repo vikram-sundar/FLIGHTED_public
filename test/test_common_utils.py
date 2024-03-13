@@ -1,7 +1,7 @@
 """Tests for common_utils.py."""
 import numpy as np
 
-from src import common_utils
+from flighted import common_utils
 
 # pylint: disable=missing-function-docstring
 

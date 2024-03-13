@@ -6,8 +6,8 @@ import pandas as pd
 import pyro
 from Bio import SeqIO
 
-from src.common_utils import PROTEIN_ALPHABET_EXTENDED, to_one_hot
-from src.flighted_inference import flighted_models, flighted_trainers
+from flighted.common_utils import PROTEIN_ALPHABET_EXTENDED, to_one_hot
+from flighted.flighted_inference import flighted_models, flighted_trainers
 
 # pylint: disable=invalid-name
 

@@ -6,7 +6,7 @@ import pandas as pd
 import torch
 import torch.nn.functional as F
 
-from src import pretrained
+from flighted import pretrained
 
 # pylint: disable=no-member, invalid-name, not-callable
 
