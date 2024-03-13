@@ -34,6 +34,10 @@ PROTEIN_ALPHABET_DICT = {
     "W": 18,
     "Y": 19,
 }
+DHARMA_HPARAMS_URL = "https://raw.githubusercontent.com/vikram-sundar/FLIGHTED_public/main/Data/DHARMA_Models/hparams.json"
+DHARMA_WEIGHTS_URL = "https://raw.githubusercontent.com/vikram-sundar/FLIGHTED_public/main/Data/DHARMA_Models/best_model.ckpt"
+SELECTION_HPARAMS_URL = "https://raw.githubusercontent.com/vikram-sundar/FLIGHTED_public/main/Data/FLIGHTED_Selection/hparams.json"
+SELECTION_WEIGHTS_URL = "https://raw.githubusercontent.com/vikram-sundar/FLIGHTED_public/main/Data/FLIGHTED_Selection/best_model.ckpt"
 
 
 def to_one_hot(sequence, alphabet):

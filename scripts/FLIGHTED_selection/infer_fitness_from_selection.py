@@ -1,14 +1,12 @@
 """Script to infer fitnesses with variance from the GB1 model."""
 import copy
-import json
-import os
 
 import numpy as np
 import pandas as pd
 import torch
 import torch.nn.functional as F
 
-from src.flighted_inference import flighted_models
+from src import pretrained
 
 # pylint: disable=no-member, invalid-name, not-callable
 
@@ -28,14 +26,7 @@ GB1_selection_data = torch.tensor(GB1_selection_data, dtype=torch.int32)
 GB1_selection_data = GB1_selection_data.unsqueeze(0)
 
 # load model
-model_dir = "Data/FLIGHTED_Selection"
-with open(os.path.join(model_dir, "hparams.json"), "r") as f:
-    hparams = json.load(f)
-model = flighted_models.FLIGHTED_Selection(hparams)
-best_model_dict = torch.load(
-    os.path.join(model_dir, "best_model.ckpt"), map_location=torch.device("cpu")
-)
-model.load_state_dict(best_model_dict["state_dict"])
+hparams, model = pretrained.load_trained_flighted_model("Selection", cpu_only=True)
 
 # run inference using model (note that we predict variance, not std dev)
 fitness_mean, fitness_var = model.selection_reverse_model(GB1_selection_data)

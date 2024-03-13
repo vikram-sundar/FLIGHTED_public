@@ -4,12 +4,11 @@ import os
 
 import numpy as np
 import pandas as pd
-import torch
 from tqdm import tqdm
 
-from src import common_utils
+from src import common_utils, pretrained
 from src.common_utils import PROTEIN_ALPHABET_EXTENDED
-from src.flighted_inference import flighted_datasets, flighted_models, flighted_trainers
+from src.flighted_inference import flighted_datasets, flighted_trainers
 
 # pylint: disable=invalid-name, redefined-outer-name, no-member
 
@@ -39,13 +38,7 @@ def load_ds():
 
 def load_model():
     """Load pretrained best model."""
-    best_model_dict = torch.load(
-        os.path.join(model_folder, "best_model.ckpt"), map_location=torch.device("cpu")
-    )
-    with open(os.path.join(model_folder, "hparams.json"), "r") as f:
-        hparams = json.load(f)
-    model = flighted_models.FLIGHTED_DHARMA(hparams)
-    model.load_state_dict(best_model_dict["state_dict"])
+    _, model = pretrained.load_trained_flighted_model("DHARMA", cpu_only=True)
     return model
 
 
