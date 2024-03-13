@@ -1,0 +1,1 @@
+{"num_amino_acids": 20, "seq_length": 4, "predict_variance": true, "learning_rate": 0.01, "landscape_model_learning_rate": 0.1, "batch_size": 10, "num_epochs": 150, "test_batch_size": 1, "num_elbo_particles": 10, "include_N_sample": false, "total_population": 100000000000.0, "enr_scale": 100, "lr_scheduler": true, "plateau_patience": 4}
