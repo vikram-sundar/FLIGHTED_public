@@ -2,22 +2,38 @@
 import os
 import re
 import subprocess
+import sys
 
 import numpy as np
 import torch
 from Bio import SeqIO
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
-from esm import FastaBatchedDataset, pretrained
-from evcouplings.couplings import CouplingsModel
-from evcouplings.utils import read_config_file, write_config_file
-from evcouplings.utils.pipeline import execute
-from sequence_models.pretrained import (
-    load_model_and_alphabet as carp_load_model_and_alphabet,
-)
-from sequence_models.utils import parse_fasta
+
+try:
+    from esm import FastaBatchedDataset, pretrained
+except ModuleNotFoundError:
+    pass
+
+try:
+    from evcouplings.couplings import CouplingsModel
+    from evcouplings.utils import read_config_file, write_config_file
+    from evcouplings.utils.pipeline import execute
+except ModuleNotFoundError:
+    pass
+try:
+    from sequence_models.pretrained import (
+        load_model_and_alphabet as carp_load_model_and_alphabet,
+    )
+    from sequence_models.utils import parse_fasta
+except ModuleNotFoundError:
+    pass
 from torch.utils.data import DataLoader
-from transformers import T5EncoderModel, T5Tokenizer
+
+try:
+    from transformers import T5EncoderModel, T5Tokenizer
+except ModuleNotFoundError:
+    pass
 
 from src.common_utils import PROTEIN_ALPHABET, RNA_ALPHABET, to_one_hot
 
@@ -126,7 +142,10 @@ def tape_embedding(sequences, model, aggregation="none", work_dir="", n_batches=
         ]
         if cpu_only:
             command += ["--no_cuda"]
-        _ = subprocess.run(command, check=True)
+        try:
+            _ = subprocess.run(command, check=True)
+        except Exception as exc:
+            raise Exception("TAPE package must be installed to use TAPE embeddings.") from exc
         with open(temp_filename, "rb") as f:
             embeddings = np.load(f, allow_pickle=True)
             for sequence, embedding in embeddings.items():
@@ -160,6 +179,9 @@ def esm_embedding(
     Returns:
         torch.tensor with the given representation (number of sequences x latent dimension length x sequence length or number of sequences x latent dimension length if mean is used).
     """
+    if "esm" not in sys.modules:
+        raise Exception("ESM package must be installed to use ESM embeddings.")
+
     if work_dir != "" and not os.path.exists(work_dir):
         os.makedirs(work_dir)
     fasta_filename = write_fasta(
@@ -213,6 +235,9 @@ def prottrans_embedding(sequences, model, aggregation="none", batch_size=4096, c
     Returns:
         torch.tensor with the given representation (number of sequences x latent dimension length x sequence length or number of sequences x latent dimension length if mean is used).
     """
+    if "transformers" not in sys.modules:
+        raise Exception("ProtTrans must be installed to use ProtTrans embeddings.")
+
     if torch.cuda.is_available() and not cpu_only:
         device = torch.device("cuda:0")
     else:
@@ -260,6 +285,9 @@ def carp_embedding(
     Returns:
         torch.tensor with the given representation (number of sequences x latent dimension length x sequence length or number of sequences x latent dimension length if mean is used).
     """
+    if "sequence_models" not in sys.modules:
+        raise Exception("CARP must be installed to use CARP embeddings.")
+
     if work_dir != "" and not os.path.exists(work_dir):
         os.makedirs(work_dir)
     fasta_filename = write_fasta(
@@ -315,6 +343,9 @@ def esm_variant_embedding(sequences, wt_sequence, model, cpu_only=False):
     Returns:
         torch.tensor with the given representation (number of sequences x 1).
     """
+    if "esm" not in sys.modules:
+        raise Exception("ESM package must be installed to use ESM embeddings.")
+
     model, alphabet = pretrained.load_model_and_alphabet(ESM_MODEL[model])
     if torch.cuda.is_available() and not cpu_only:
         model = model.cuda()
@@ -362,6 +393,9 @@ def carp_variant_embedding(sequences, model, work_dir="", batch_size=4096, cpu_o
     Returns:
         torch.tensor with the given representation (number of sequences x 1).
     """
+    if "sequence_models" not in sys.modules:
+        raise Exception("CARP must be installed to use CARP embeddings.")
+
     if work_dir != "" and not os.path.exists(work_dir):
         os.makedirs(work_dir)
     fasta_filename = write_fasta(
@@ -425,6 +459,9 @@ def evcoupling_variant_embedding(
     Returns:
         torch.tensor with the given representation (number of sequences x 1).
     """
+    if "evcouplings" not in sys.modules:
+        raise Exception("EVCouplings must be installed to use EVCouplings embeddings.")
+
     if os.path.exists(work_dir):
         subprocess.run(["rm", "-rf", work_dir], check=True)
     os.makedirs(work_dir)
@@ -493,6 +530,9 @@ def esm_finetune_embedding(sequences, model):
     Returns:
         torch.tensor with the given representation (number of sequences x sequence length + 1).
     """
+    if "esm" not in sys.modules:
+        raise Exception("ESM package must be installed to use ESM embeddings.")
+
     _, alphabet = pretrained.load_model_and_alphabet(ESM_MODEL[model])
     _, _, toks = alphabet.get_batch_converter()([(str(i), seq) for i, seq in enumerate(sequences)])
     return toks

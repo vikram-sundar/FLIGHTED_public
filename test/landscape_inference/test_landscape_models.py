@@ -3,7 +3,7 @@ import torch
 
 from src.landscape_inference import landscape_models
 
-# pylint: disable=no-member, missing-function-docstring
+# pylint: disable=no-member, missing-function-docstring, import-outside-toplevel, unused-import
 
 
 def test_mse_loss():
@@ -13,6 +13,20 @@ def test_mse_loss():
     variances = torch.Tensor([1, 2, 1, 1])
     loss = mse_loss(y, y_hat, variances)
     assert loss.numpy()[()] > 3.374 and loss.numpy()[()] < 3.376
+
+
+def test_trivial_landscape_model():
+    input_hparams = {"seq_length": 3, "num_amino_acids": 2}
+    model = landscape_models.TrivialLandscapeModel(input_hparams)
+    x = torch.Tensor([[[1, 0], [0, 1], [0, 1]], [[1, 0], [1, 0], [1, 0]]])
+    fitnesses = model(x)
+    assert list(fitnesses.shape) == [2]
+
+    input_hparams = {"seq_length": 3, "predict_variance": True, "num_amino_acids": 2}
+    model = landscape_models.TrivialLandscapeModel(input_hparams)
+    fitnesses, var = model(x)
+    assert list(fitnesses.shape) == [2]
+    assert list(var.shape) == [2]
 
 
 def test_linear_regression_landscape_model():
@@ -26,6 +40,37 @@ def test_linear_regression_landscape_model():
     fitnesses, var = lin_reg(x)
     assert list(fitnesses.shape) == [2]
     assert list(var.shape) == [2]
+
+
+def test_fnn_landscape_model():
+    input_hparams = {"num_features": 8, "hidden_dim": [2]}
+    fnn = landscape_models.FNNLandscapeModel(input_hparams)
+    x = torch.Tensor([[[1, 0], [0, 1], [0, 1], [1, 0]], [[1, 0], [1, 0], [0, 1], [0, 1]]])
+    assert list(fnn(x).shape) == [2]
+
+    input_hparams = {"num_features": 8, "hidden_dim": [2], "predict_variance": True}
+    fnn = landscape_models.FNNLandscapeModel(input_hparams)
+    fitnesses, var = fnn(x)
+    assert list(fitnesses.shape) == [2]
+    assert list(var.shape) == [2]
+
+
+def test_esm_finetune_landscape_model():
+    try:
+        import esm
+
+        input_hparams = {"num_features": 768, "hidden_dim": [2]}
+        fnn = landscape_models.ESMFinetuneLandscapeModel(input_hparams)
+        x = torch.LongTensor([[32, 5, 5], [32, 5, 6]])
+        assert list(fnn(x).shape) == [2]
+
+        input_hparams = {"num_features": 768, "hidden_dim": [2], "predict_variance": True}
+        fnn = landscape_models.ESMFinetuneLandscapeModel(input_hparams)
+        fitnesses, var = fnn(x)
+        assert list(fitnesses.shape) == [2]
+        assert list(var.shape) == [2]
+    except ModuleNotFoundError:
+        pass
 
 
 def test_cnn_landscape_model():
@@ -54,28 +99,30 @@ def test_cnn_landscape_model():
     assert list(var.shape) == [2]
 
 
-def test_fnn_landscape_model():
-    input_hparams = {"num_features": 8, "hidden_dim": [2]}
-    fnn = landscape_models.FNNLandscapeModel(input_hparams)
-    x = torch.Tensor([[[1, 0], [0, 1], [0, 1], [1, 0]], [[1, 0], [1, 0], [0, 1], [0, 1]]])
-    assert list(fnn(x).shape) == [2]
+def test_esm_cnn_landscape_model():
+    try:
+        import esm
 
-    input_hparams = {"num_features": 8, "hidden_dim": [2], "predict_variance": True}
-    fnn = landscape_models.FNNLandscapeModel(input_hparams)
-    fitnesses, var = fnn(x)
-    assert list(fitnesses.shape) == [2]
-    assert list(var.shape) == [2]
+        input_hparams = {
+            "num_features": 768,
+            "num_channels": [3],
+            "filter_size": [2],
+            "intermediate_dim": 6,
+        }
+        cnn = landscape_models.ESMCNNLandscapeModel(input_hparams)
+        x = torch.LongTensor([[32, 5, 5], [32, 5, 6]])
+        assert list(cnn(x).shape) == [2]
 
-
-def test_trivial_landscape_model():
-    input_hparams = {"seq_length": 3, "num_amino_acids": 2}
-    model = landscape_models.TrivialLandscapeModel(input_hparams)
-    x = torch.Tensor([[[1, 0], [0, 1], [0, 1]], [[1, 0], [1, 0], [1, 0]]])
-    fitnesses = model(x)
-    assert list(fitnesses.shape) == [2]
-
-    input_hparams = {"seq_length": 3, "predict_variance": True, "num_amino_acids": 2}
-    model = landscape_models.TrivialLandscapeModel(input_hparams)
-    fitnesses, var = model(x)
-    assert list(fitnesses.shape) == [2]
-    assert list(var.shape) == [2]
+        input_hparams = {
+            "num_features": 768,
+            "num_channels": [3],
+            "filter_size": [2],
+            "intermediate_dim": 6,
+            "predict_variance": True,
+        }
+        cnn = landscape_models.ESMCNNLandscapeModel(input_hparams)
+        fitnesses, var = cnn(x)
+        assert list(fitnesses.shape) == [2]
+        assert list(var.shape) == [2]
+    except ModuleNotFoundError:
+        pass

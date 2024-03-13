@@ -1,8 +1,14 @@
 """Model classes to train landscape models."""
 
 # pylint: disable=no-name-in-module
+import sys
+
 import torch
-from esm import pretrained
+
+try:
+    from esm import pretrained
+except ModuleNotFoundError:
+    pass
 from torch import nn
 
 from src.common_utils import overwrite_hparams
@@ -210,6 +216,9 @@ class ESMFinetuneLandscapeModel(nn.Module):
             hparams: Dict containing hyperparameters for the model. Unspecified hyperparameters
                 will be replaced as in DEFAULT_HPARAMS. See DEFAULT_HPARAMS for descriptions.
         """
+        if "esm" not in sys.modules:
+            raise Exception("ESM package must be installed to use ESM embeddings.")
+
         super().__init__()
         self.hparams = overwrite_hparams(hparams, self.DEFAULT_HPARAMS)
         output_dim = 2 if self.hparams["predict_variance"] else 1
@@ -362,6 +371,9 @@ class ESMCNNLandscapeModel(nn.Module):
             hparams: Dict containing hyperparameters for the model. Unspecified hyperparameters
                 will be replaced as in DEFAULT_HPARAMS. See DEFAULT_HPARAMS for descriptions.
         """
+        if "esm" not in sys.modules:
+            raise Exception("ESM package must be installed to use ESM embeddings.")
+
         super().__init__()
         self.hparams = overwrite_hparams(hparams, self.DEFAULT_HPARAMS)
         output_dim = 2 if self.hparams["predict_variance"] else 1

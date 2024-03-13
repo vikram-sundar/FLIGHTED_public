@@ -93,7 +93,6 @@ MODEL_CLASSES = {
 WT_SEQUENCE = "MFKGPRDYNPISSTICHLTNESDGHTTSLYGIGFGPFIITNKHLFRRNNGTLLVQSLHGVFKVKNTTTLQQHLIDGRDMIIIRMPKDFPPFPQKLKFREPQREERICLVTTNFQTKSMSSMVSDTSCTFPSSDGIFWKHWIQTKDGQCGSPLVSTRDGFIVGIHSASNFTNTNNYFTSVPKNFMELLTNQEAQQWVSGWRLNADSVLWGGHKVFMVKPEEPFQPVKEATQLMN"
 EMBEDDINGS = {
     "one_hot": embeddings.one_hot_embedding,
-    "georgiev": embeddings.georgiev_embedding,
     "tape": functools.partial(
         embeddings.tape_embedding, model="transformer", work_dir=args.output, aggregation="mean"
     ),
@@ -370,10 +369,10 @@ landscape_trainers.train_landscape_model(
     test_fitnesses,
     embedding_func,
     os.path.join(output_dir, args.output),
-    train_variances=train_variances,
-    val_variances=val_variances,
-    test_variances=test_variances,
-    input_hparams=hparams,
+    train_variances,
+    val_variances,
+    test_variances,
+    hparams,
 )
 
 np.save(
