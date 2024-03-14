@@ -6,7 +6,9 @@ Author: Vikram Sundar.
 
 ## Installation
 
-The following packages are required for use and development of FLIGHTED:
+For convenience, you can install FLIGHTED on pip using `pip install flighted` in a clean virtual environment. This installs FLIGHTED, but not any other packages you may want for landscape modeling.
+
+You can also install directly from the source code here on Github. The following packages are required for use and development of FLIGHTED:
 
 - numpy
 - scipy
@@ -22,6 +24,9 @@ The following packages are required for use and development of FLIGHTED:
 - isort
 - pre-commit
 - pyro-ppl
+
+The following packages are not required for use of FLIGHTED, but needed for landscape modeling:
+
 - fair-esm
 - tape_proteins
 - evcouplings
@@ -29,19 +34,51 @@ The following packages are required for use and development of FLIGHTED:
 - sentencepiece
 - sequence-models
 
-An env.yml file is provided for your convenience, especially when installing the tricky dependencies around `evcoupling`, though it has a few packages that are not necessary for FLIGHTED. If you do not want to run the full landscape modeling and just want to use FLIGHTED, you do not need to install anything below `pyro-ppl` on the list above, which can make your environment considerably simpler.
+An env.yml file is provided for your convenience, especially when installing the tricky dependencies around `evcoupling`, though it has a few packages that are not necessary for FLIGHTED. 
 
 Once these packages are installed, add the FLIGHTED directory to your Python path (either as an environment variable or within an individual script) to run the model.
 
+## Basic Use
+
+### FLIGHTED-Selection
+
+To run FLIGHTED-Selection, first prepare a tensor with the following five columns:
+
+1. Variant number (0 - number of variants)
+2. Number of samples of this variant observed pre-selection
+3. Number of samples of this variant observed post-selection
+4. Total samples taken pre-selection
+5. Total samples taken post-selection
+
+This should be a tensor with shape (number of variants, 5). Then run:
+
+`from flighted import pretrained
+
+hparams, model = pretrained.load_trained_flighted_model("Selection", cpu_only=True)
+fitness_mean, fitness_var = model.selection_reverse_model(selection_data)`
+
+The result is the fitness mean and variance (not standard deviation).
+
+### FLIGHTED-DHARMA
+
+To run FLIGHTED-DHARMA, collect all DHARMA reads for a given variant into a single tensor with shape (number of reads, canvas length, 3). The last column is a one-hot encoding for 3 categories: wild-type, C to T Mutation, other mutation. Then run:
+
+`from flighted import pretrained
+
+hparams, model = pretrained.load_trained_flighted_model("DHARMA", cpu_only=True)
+mean, variance = model.infer_fitness_from_dharma(dharma_data)`
+
+The result is the fitness mean and variance (not standard deviation).
+
 ## Tests
 
-Before using the package, you should test the code after installation to ensure that all the requirements are installed correctly and the package is working. To test the code, run `make test-all` in the main directory. This will automatically run a linter and all tests.
+If you install from Github, you should test the code after installation to ensure that all the requirements are installed correctly and the package is working. To test the code, run `make test-all` in the main directory. This will automatically run a linter and all tests.
 
 While developing code, you can skip slow tests by running `make test` instead.
 
 ## Data
 
-Data, including the trained model weights for FLIGHTED-Selection and FLIGHTED-DHARMA, has been deposited at Zenodo [here](https://zenodo.org/records/10777739) and [here](https://zenodo.org/records/10779337). Data should be downloaded and installed in a `Data/` folder within this directory so the filepaths match in scripts and notebooks.
+Data has been deposited at Zenodo [here](https://zenodo.org/records/10777739) and [here](https://zenodo.org/records/10779337). Data should be downloaded and installed in a `Data/` folder within this directory so the filepaths match in scripts and notebooks. The trained model weights and hyperparameters are on Github and may be automatically downloaded as described above.
 
 ## Scripts
 
