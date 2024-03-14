@@ -52,10 +52,12 @@ To run FLIGHTED-Selection, first prepare a tensor with the following five column
 
 This should be a tensor with shape (number of variants, 5). Then run:
 
-`from flighted import pretrained
+```
+from flighted import pretrained
 
 hparams, model = pretrained.load_trained_flighted_model("Selection", cpu_only=True)
-fitness_mean, fitness_var = model.selection_reverse_model(selection_data)`
+fitness_mean, fitness_var = model.selection_reverse_model(selection_data)
+```
 
 The result is the fitness mean and variance (not standard deviation).
 
@@ -63,10 +65,12 @@ The result is the fitness mean and variance (not standard deviation).
 
 To run FLIGHTED-DHARMA, collect all DHARMA reads for a given variant into a single tensor with shape (number of reads, canvas length, 3). The last column is a one-hot encoding for 3 categories: wild-type, C to T Mutation, other mutation. Then run:
 
-`from flighted import pretrained
+```
+from flighted import pretrained
 
 hparams, model = pretrained.load_trained_flighted_model("DHARMA", cpu_only=True)
-mean, variance = model.infer_fitness_from_dharma(dharma_data)`
+mean, variance = model.infer_fitness_from_dharma(dharma_data)
+```
 
 The result is the fitness mean and variance (not standard deviation).
 
