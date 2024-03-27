@@ -107,4 +107,4 @@ The provided notebooks reproduce all figures used in the main text and supplemen
 
 ## Citing FLIGHTED
 
-For now, please cite the MLSB paper.
+For now, please cite the bioRxiv preprint [here](https://www.biorxiv.org/content/10.1101/2024.03.26.586797v1).
