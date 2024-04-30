@@ -29,7 +29,7 @@ class MSELoss(nn.Module):
     """
 
     def forward(self, y, y_hat, var):
-        """Computes loss with negative data."""
+        """Computes loss."""
         loss = torch.sum(1 / var * (y_hat - y) ** 2)
         loss /= y.shape[0]
         return loss
