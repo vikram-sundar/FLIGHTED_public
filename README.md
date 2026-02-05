@@ -61,6 +61,8 @@ fitness_mean, fitness_var = model.selection_reverse_model(selection_data)
 
 The result is the fitness mean and variance (not standard deviation).
 
+Training and inference for FLIGHTED-Selection should be extremely fast (within minutes and seconds, respectively) on essentially any GPU.
+
 ### FLIGHTED-DHARMA
 
 To run FLIGHTED-DHARMA, collect all DHARMA reads for a given variant into a single tensor with shape (number of reads, canvas length, 3). The last column is a one-hot encoding for 3 categories: wild-type, C to T Mutation, other mutation. Then run:
@@ -73,6 +75,8 @@ mean, variance = model.infer_fitness_from_dharma(dharma_data)
 ```
 
 The result is the fitness mean and variance (not standard deviation).
+
+Inference for FLIGHTED-DHARMA should be extremely fast (within seconds) on essentially any GPU. Training may take up to one day on a minimal GPU.
 
 ## Tests
 
