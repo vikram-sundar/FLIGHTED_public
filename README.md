@@ -111,4 +111,4 @@ The provided notebooks reproduce all figures used in the main text and supplemen
 
 ## Citing FLIGHTED
 
-For now, please cite the bioRxiv preprint [here](https://www.biorxiv.org/content/10.1101/2024.03.26.586797v1).
+Please cite the main FLIGHTED paper [here](https://doi.org/10.1016/j.cels.2026.101739).
